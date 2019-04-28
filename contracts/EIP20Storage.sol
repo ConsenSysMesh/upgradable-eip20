@@ -32,10 +32,10 @@ contract EIP20Storage {
         functionsContract = _newContract;
     }
     function increaseSupply(uint _value) public onlyFunctions {
-        totalSupply.add(_value);
+        totalSupply = totalSupply.add(_value);
     }
     function decreaseSupply(uint _value) public onlyFunctions {
-        totalSupply.sub(_value);
+        totalSupply = totalSupply.sub(_value);
     }
     
     // Normal EIP20 functions

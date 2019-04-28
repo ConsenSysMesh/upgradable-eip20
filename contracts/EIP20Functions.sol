@@ -20,12 +20,11 @@ contract EIP20Functions {
     ) public {
         eipStorage = new EIP20Storage(address(this));
         eipStorage.setBalances(msg.sender,_initialAmount);
+        eipStorage.increaseSupply(_initialAmount);
         name = _tokenName;
         decimals = _decimalUnits;
         symbol = _tokenSymbol;
-
     }
-
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
         require(eipStorage.balanceOf(msg.sender) >= _value);
@@ -90,13 +89,6 @@ contract EIP20Functions {
     function allowance(address _owner, address _spender) public view returns (uint256) {
         return eipStorage.allowance(_owner, _spender);
     }
-
-    // This contract should be extended if developers would like to take advantage of 
-    // upgradeability, else this won't get called and contract will function as a normal EIP20
-    function upgradeFunctions(address _a) internal {
-        eipStorage.upgradeFunctions(_a);
-    }
-
 
     event Transfer(address indexed _from, address indexed _to, uint256 _value);
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
