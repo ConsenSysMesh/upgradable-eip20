@@ -74,18 +74,20 @@ contract EIP20Functions {
         return true;
     }
 
-
-    function balances(address _owner) public view returns (uint256 balance) {
+    function totalSupply() public view returns (uint256) {
+        return eipStorage.totalSupply();
+    }
+    function balances(address _owner) public view returns (uint256) {
         return eipStorage.balanceOf(_owner);
     }
-    function balanceOf(address _owner) public view returns (uint256 balance) {
+    function balanceOf(address _owner) public view returns (uint256) {
         return eipStorage.balanceOf(_owner);
     }
 
-    function allowed(address _owner, address _spender) public view returns (uint256 remaining) {
+    function allowed(address _owner, address _spender) public view returns (uint256) {
         return eipStorage.allowance(_owner, _spender);
     }
-    function allowance(address _owner, address _spender) public view returns (uint256 remaining) {
+    function allowance(address _owner, address _spender) public view returns (uint256) {
         return eipStorage.allowance(_owner, _spender);
     }
 
