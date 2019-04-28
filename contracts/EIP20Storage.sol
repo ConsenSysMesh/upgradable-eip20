@@ -1,7 +1,6 @@
 pragma solidity ^0.5.0;
 import "./libs/math/SafeMath.sol";
 
-
 contract EIP20Storage {
     using SafeMath for uint256;
     uint256 constant private MAX_UINT256 = 2**256 - 1;
@@ -29,17 +28,22 @@ contract EIP20Storage {
     function setAllowed(address _owner, address _spender, uint256 _value) public onlyFunctions {
         allowed[_owner][_spender] = _value;
     }
-
     function upgradeFunctions(address _newContract) public onlyFunctions {
         functionsContract = _newContract;
+    }
+    function increaseSupply(uint _value) public onlyFunctions {
+        totalSupply.add(_value);
+    }
+    function decreaseSupply(uint _value) public onlyFunctions {
+        totalSupply.sub(_value);
     }
     
     // Normal EIP20 functions
 
     function transfer(address _to, uint256 _value) public returns (bool success) {
         require(balances[msg.sender] >= _value);
-        balances[msg.sender] -= _value;
-        balances[_to] += _value;
+        balances[msg.sender] = balances[msg.sender].sub(_value);
+        balances[_to] = balances[_to].add(_value);
         emit Transfer(msg.sender, _to, _value); //solhint-disable-line indent, no-unused-vars
         return true;
     }
@@ -47,10 +51,10 @@ contract EIP20Storage {
     function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
         uint256 allowance = allowed[_from][msg.sender];
         require(balances[_from] >= _value && allowance >= _value);
-        balances[_to] += _value;
-        balances[_from] -= _value;
+        balances[_to] = balances[_to].add(_value);
+        balances[_from] = balances[_from].sub(_value);
         if (allowance < MAX_UINT256) {
-            allowed[_from][msg.sender] -= _value;
+            allowed[_from][msg.sender] = allowed[_from][msg.sender].sub(_value);
         }
         emit Transfer(_from, _to, _value); //solhint-disable-line indent, no-unused-vars
         return true;

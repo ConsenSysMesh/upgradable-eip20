@@ -23,6 +23,7 @@ contract EIP20Functions {
         name = _tokenName;
         decimals = _decimalUnits;
         symbol = _tokenSymbol;
+
     }
 
 
@@ -30,11 +31,11 @@ contract EIP20Functions {
         require(eipStorage.balanceOf(msg.sender) >= _value);
 
         //balances[msg.sender] -= _value;
-        uint256 fromValue = eipStorage.balanceOf(msg.sender) - _value;
+        uint256 fromValue = eipStorage.balanceOf(msg.sender).sub(_value);
         eipStorage.setBalances(msg.sender,fromValue);
         
         //balances[_to] += _value;
-        uint256 toValue = eipStorage.balanceOf(_to) + _value;
+        uint256 toValue = eipStorage.balanceOf(_to).add(_value);
         eipStorage.setBalances(_to,toValue);
 
         emit Transfer(msg.sender, _to, _value); 
@@ -50,16 +51,16 @@ contract EIP20Functions {
         require(eipStorage.balanceOf(_from) >= _value && allowance >= _value);
 
         // balances[_from] -= _value;
-        uint256 fromValue = eipStorage.balanceOf(_from) - _value;
+        uint256 fromValue = eipStorage.balanceOf(_from).sub(_value);
         eipStorage.setBalances(_from,fromValue);
 
         // balances[_to] += _value;
-        uint256 toValue = eipStorage.balanceOf(_to) + _value;
+        uint256 toValue = eipStorage.balanceOf(_to).add(_value);
         eipStorage.setBalances(_to,toValue);
 
         if (allowance < MAX_UINT256) {
             // allowed[_from][msg.sender] -= _value;
-            uint256 allowedValue = allowance - _value;
+            uint256 allowedValue = allowance.sub(_value);
             eipStorage.setAllowed(_from,msg.sender, allowedValue);
         }
         emit Transfer(_from, _to, _value);
